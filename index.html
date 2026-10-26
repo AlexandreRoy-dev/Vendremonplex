@@ -102,6 +102,50 @@
         .faq-icon.rotate {
             transform: rotate(180deg);
         }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        .vmp-contact {
+            min-width: 0;
+        }
+
+        .vmp-form-embed {
+            width: 100%;
+            overflow: hidden;
+            line-height: 0;
+            background: #fff;
+            border-radius: 12px;
+        }
+
+        .vmp-form-embed.vmp-embed-pending {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 1px;
+            height: 1px;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+        }
+
+        .vmp-form-iframe {
+            display: block;
+            width: 100%;
+            max-width: 100%;
+            min-height: 460px;
+            border: 0;
+            background: #fff;
+        }
     </style>
 </head>
 <body class="font-sans text-gray-800 bg-wealthGray antialiased selection:bg-remaxRed selection:text-white">
@@ -141,7 +185,7 @@
             <div class="absolute top-0 right-0 w-[600px] h-[600px] bg-remaxRed opacity-[0.03] rounded-full blur-3xl transform translate-x-1/3 -translate-y-1/3"></div>
 
             <div class="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
-                <div class="flex flex-col lg:flex-row gap-16 items-center">
+                <div class="flex flex-col lg:flex-row gap-16 items-start">
                     
                     <div class="lg:w-1/2 text-white reveal">
                         <div class="inline-flex items-center gap-2 border border-white/10 bg-white/5 rounded-full px-4 py-1.5 mb-8">
@@ -168,48 +212,52 @@
                     </div>
 
                     <div class="lg:w-1/2 w-full reveal reveal-delay-2">
-                        <div class="bg-wealthBlueLight border border-white/10 rounded-2xl p-8 lg:p-10 shadow-floating relative overflow-hidden">
+                        <div id="demande-evaluation" class="vmp-contact bg-wealthBlueLight border border-white/10 rounded-2xl p-6 sm:p-8 lg:p-10 shadow-floating relative overflow-hidden" data-vmp-contact>
                             <div class="absolute top-0 left-0 w-full h-1 bg-remaxRed"></div>
 
-                            <div class="mb-8">
+                            <div class="mb-6">
                                 <h2 class="text-2xl font-display font-bold text-white mb-2">Demande d'évaluation</h2>
                                 <p class="text-gray-400 text-sm">Indiquez vos coordonnées pour une demande d'information sur votre plex.</p>
                             </div>
-                            
-                            <form id="wealthLeadForm" class="space-y-6">
-                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                                    <div>
-                                        <input type="text" id="fullName" required placeholder="Nom complet" class="input-wealth">
+
+                            <div class="vmp-contact-fallback">
+                                <p class="text-gray-400 text-sm leading-relaxed mb-6">Le bouton ouvre un courriel à <a class="text-white underline decoration-white/30 underline-offset-2" href="mailto:p-o.chiasson@remax-quebec.com">p-o.chiasson@remax-quebec.com</a>. Cette page n'envoie rien elle-même.</p>
+                                <form class="vmp-mail-form space-y-6" action="mailto:p-o.chiasson@remax-quebec.com" method="post" enctype="text/plain">
+                                    <input name="page" type="hidden" value="">
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                        <div>
+                                            <label class="sr-only" for="vmp-nom">Nom complet</label>
+                                            <input id="vmp-nom" name="nom" type="text" required maxlength="120" autocomplete="name" placeholder="Nom complet" class="input-wealth">
+                                        </div>
+                                        <div>
+                                            <label class="sr-only" for="vmp-telephone">Téléphone</label>
+                                            <input id="vmp-telephone" name="telephone" type="tel" required maxlength="40" autocomplete="tel" inputmode="tel" placeholder="Téléphone" class="input-wealth">
+                                        </div>
                                     </div>
                                     <div>
-                                        <input type="tel" id="phone" required placeholder="Téléphone" class="input-wealth">
+                                        <label class="sr-only" for="vmp-courriel">Courriel</label>
+                                        <input id="vmp-courriel" name="courriel" type="email" required maxlength="160" autocomplete="email" inputmode="email" placeholder="Courriel" class="input-wealth">
                                     </div>
-                                </div>
-                                <div>
-                                    <input type="email" id="email" required placeholder="Courriel" class="input-wealth">
-                                </div>
-                                
-                                <div>
-                                    <select id="units" required class="input-wealth">
-                                        <option value="" disabled selected>Typologie de l'immeuble</option>
-                                        <option value="Duplex">Duplex (2)</option>
-                                        <option value="Triplex">Triplex (3)</option>
-                                        <option value="Quadruplex">Quadruplex (4)</option>
-                                        <option value="5-8 unités">5 à 8 unités</option>
-                                        <option value="9+ unités">9 unités et plus</option>
-                                    </select>
-                                </div>
-
-                                <div>
-                                    <input type="text" id="address" placeholder="Adresse complète (optionnel)" class="input-wealth">
-                                </div>
-
-                                <button type="submit" class="w-full bg-remaxRed hover:bg-remaxRedHover text-white font-display font-bold tracking-wide text-sm uppercase py-4 rounded transition-colors duration-300 mt-4 flex items-center justify-center gap-3 group">
-                                    Soumettre le dossier
-                                    <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                                </button>
-                                <p class="mt-4 text-center text-[11px] text-gray-500 tracking-wider uppercase">Demande d'information</p>
-                            </form>
+                                    <div>
+                                        <label class="sr-only" for="vmp-typologie">Typologie de l'immeuble</label>
+                                        <select id="vmp-typologie" name="typologie" required class="input-wealth">
+                                            <option value="" disabled selected>Typologie de l'immeuble</option>
+                                            <option value="Duplex (2)">Duplex (2)</option>
+                                            <option value="Triplex (3)">Triplex (3)</option>
+                                            <option value="Quadruplex (4)">Quadruplex (4)</option>
+                                            <option value="5 à 8 unités">5 à 8 unités</option>
+                                            <option value="9 unités et plus">9 unités et plus</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="sr-only" for="vmp-adresse">Adresse complète (optionnel)</label>
+                                        <input id="vmp-adresse" name="adresse" type="text" maxlength="200" autocomplete="street-address" placeholder="Adresse complète (optionnel)" class="input-wealth">
+                                    </div>
+                                    <button type="submit" class="w-full bg-remaxRed hover:bg-remaxRedHover text-white font-display font-bold tracking-wide text-sm uppercase py-4 rounded transition-colors duration-300 mt-4">
+                                        Ouvrir le courriel
+                                    </button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -376,30 +424,240 @@
             });
         });
 
-        document.getElementById('wealthLeadForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const btn = this.querySelector('button[type="submit"]');
-            const originalHTML = btn.innerHTML;
-            
-            btn.innerHTML = `
-                <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
-                Analyse en cours...
-            `;
-            btn.disabled = true;
-            btn.classList.add('opacity-80', 'cursor-not-allowed');
+        /* Même mécanisme que cdf-contact.js : iframe GoHighLevel + form_embed.js.
+           Si l'iframe ou le script échoue, ou si rien n'a chargé après 5 s,
+           le formulaire courriel reste affiché. */
+        (function () {
+            var VMP_GHL_FORM_ID = 'aPBFp2Ved0if0rWkUWTx';
+            var VMP_CONTACT_EMAIL = 'p-o.chiasson@remax-quebec.com';
+            var LOAD_TIMEOUT_MS = 5000;
 
-            setTimeout(() => {
-                alert("Dossier transmis en toute sécurité. Un courtier de l'Équipe Chiasson De Francesco vous contactera pour planifier l'analyse financière de votre immeuble.");
-                this.reset();
-                btn.innerHTML = originalHTML;
-                btn.disabled = false;
-                btn.classList.remove('opacity-80', 'cursor-not-allowed');
-            }, 1500);
-        });
+            function formIdFromConfig(value) {
+                var raw = String(value || '').trim();
+                if (!raw) return '';
+                var fromUrl = raw.match(/widget\/form\/([A-Za-z0-9]+)\/?(?:$|[?#])/);
+                if (fromUrl) return fromUrl[1];
+                if (/^[A-Za-z0-9]+$/.test(raw)) return raw;
+                return '';
+            }
+
+            function loadScript(src, onload, onerror) {
+                var existing = document.querySelector('script[src="' + src + '"]');
+                if (existing) {
+                    if (existing.getAttribute('data-vmp-loaded') === '1') {
+                        if (onload) onload();
+                        return;
+                    }
+                    if (existing.getAttribute('data-vmp-failed') === '1') {
+                        if (onerror) onerror();
+                        return;
+                    }
+                    if (onload) existing.addEventListener('load', onload);
+                    if (onerror) existing.addEventListener('error', onerror);
+                    return;
+                }
+                var script = document.createElement('script');
+                script.src = src;
+                script.async = false;
+                script.addEventListener('load', function () {
+                    script.setAttribute('data-vmp-loaded', '1');
+                    if (onload) onload();
+                });
+                script.addEventListener('error', function () {
+                    script.setAttribute('data-vmp-failed', '1');
+                    if (onerror) onerror();
+                });
+                document.body.appendChild(script);
+            }
+
+            function fieldValue(form, name) {
+                var el = form.elements[name];
+                return el ? String(el.value || '').trim() : '';
+            }
+
+            function bindFallback(root) {
+                var form = root.querySelector('form.vmp-mail-form');
+                if (!form || form.getAttribute('data-vmp-bound') === '1') return;
+                form.setAttribute('data-vmp-bound', '1');
+                var page = form.elements.page;
+                if (page) page.value = window.location.href.split('#')[0];
+
+                form.addEventListener('submit', function (event) {
+                    event.preventDefault();
+                    if (!form.checkValidity()) {
+                        form.reportValidity();
+                        return;
+                    }
+                    var adresse = fieldValue(form, 'adresse');
+                    var body = [
+                        'Nom : ' + fieldValue(form, 'nom'),
+                        'Téléphone : ' + fieldValue(form, 'telephone'),
+                        'Courriel : ' + fieldValue(form, 'courriel'),
+                        'Typologie : ' + fieldValue(form, 'typologie'),
+                        'Adresse : ' + (adresse || 'non précisée'),
+                        'Page : ' + (page && page.value ? page.value : window.location.href.split('#')[0])
+                    ].join('\n');
+                    window.location.href = 'mailto:' + VMP_CONTACT_EMAIL
+                        + '?subject=' + encodeURIComponent("Demande d'évaluation, vendremonplex.com")
+                        + '&body=' + encodeURIComponent(body);
+                });
+            }
+
+            function iframeHasForeignDocument(iframe) {
+                try {
+                    var win = iframe.contentWindow;
+                    if (!win) return false;
+                    void win.location.href;
+                    return false;
+                } catch (error) {
+                    return true;
+                }
+            }
+
+            function createIframe(formId, iframeId) {
+                var iframe = document.createElement('iframe');
+                iframe.className = 'vmp-form-iframe';
+                iframe.id = iframeId;
+                iframe.title = "Demande d'évaluation";
+                iframe.setAttribute('data-layout', "{'id':'INLINE'}");
+                iframe.setAttribute('data-trigger-type', 'alwaysShow');
+                iframe.setAttribute('data-trigger-value', '');
+                iframe.setAttribute('data-activation-type', 'alwaysActivated');
+                iframe.setAttribute('data-activation-value', '');
+                iframe.setAttribute('data-deactivation-type', 'neverDeactivate');
+                iframe.setAttribute('data-deactivation-value', '');
+                iframe.setAttribute('data-form-name', "Demande d'évaluation");
+                iframe.setAttribute('data-height', '460');
+                iframe.setAttribute('data-layout-iframe-id', iframeId);
+                iframe.setAttribute('data-form-id', formId);
+                return iframe;
+            }
+
+            function resizeIframe(iframe, height) {
+                if (!iframe || !height) return;
+                var parsed = parseInt(height, 10);
+                if (!parsed || parsed < 200) return;
+                iframe.style.height = parsed + 'px';
+                iframe.setAttribute('data-height', String(parsed));
+            }
+
+            window.addEventListener('message', function (event) {
+                var origin = event.origin || '';
+                var allowed = origin === 'https://api.leadconnectorhq.com'
+                    || origin === 'https://link.msgsndr.com'
+                    || origin === 'https://msgsndr.com'
+                    || origin.indexOf('leadconnectorhq.com') !== -1;
+                if (!allowed) return;
+                var data = event.data;
+                if (typeof data === 'string') {
+                    try {
+                        data = JSON.parse(data);
+                    } catch (error) {
+                        return;
+                    }
+                }
+                if (!data || typeof data !== 'object') return;
+                var height = data.height || data.frameHeight || (data.payload && data.payload.height);
+                if (!height) return;
+                var iframeId = data.id || data.iframeId || data['data-layout-iframe-id'];
+                if (iframeId) {
+                    var target = document.getElementById(iframeId);
+                    if (target) resizeIframe(target, height);
+                    return;
+                }
+                document.querySelectorAll('.vmp-form-iframe').forEach(function (iframe) {
+                    resizeIframe(iframe, height);
+                });
+            });
+
+            function showEmbed(root) {
+                var embed = root.querySelector('.vmp-form-embed');
+                if (embed) embed.classList.remove('vmp-embed-pending');
+                var iframe = root.querySelector('.vmp-form-iframe');
+                if (iframe) iframe.removeAttribute('tabindex');
+                var fallback = root.querySelector('.vmp-contact-fallback');
+                if (fallback) fallback.setAttribute('hidden', '');
+                root.setAttribute('data-vmp-state', 'embed');
+            }
+
+            function showFallback(root) {
+                var embed = root.querySelector('.vmp-form-embed');
+                if (embed) embed.remove();
+                var fallback = root.querySelector('.vmp-contact-fallback');
+                if (fallback) fallback.removeAttribute('hidden');
+                bindFallback(root);
+                root.setAttribute('data-vmp-state', 'fallback');
+            }
+
+            function mountEmbed(root, formId) {
+                var settled = false;
+                var iframeLoaded = false;
+                var scriptLoaded = false;
+                var iframeId = 'inline-' + formId;
+                var embed = document.createElement('div');
+                var iframe = createIframe(formId, iframeId);
+                var fallback = root.querySelector('.vmp-contact-fallback');
+                var timer;
+
+                embed.className = 'vmp-form-embed vmp-embed-pending';
+                iframe.setAttribute('tabindex', '-1');
+                embed.appendChild(iframe);
+                if (fallback) root.insertBefore(embed, fallback);
+                else root.appendChild(embed);
+                root.setAttribute('data-vmp-state', 'pending');
+                bindFallback(root);
+
+                function fail() {
+                    if (settled) return;
+                    settled = true;
+                    window.clearTimeout(timer);
+                    showFallback(root);
+                }
+
+                function succeed() {
+                    if (settled || !iframeLoaded || !scriptLoaded) return;
+                    settled = true;
+                    window.clearTimeout(timer);
+                    showEmbed(root);
+                }
+
+                iframe.addEventListener('error', fail);
+                iframe.addEventListener('load', function () {
+                    if (!iframeHasForeignDocument(iframe)) return;
+                    iframeLoaded = true;
+                    succeed();
+                });
+
+                timer = window.setTimeout(function () {
+                    if (!iframeLoaded || !scriptLoaded) fail();
+                }, LOAD_TIMEOUT_MS);
+
+                iframe.src = 'https://api.leadconnectorhq.com/widget/form/' + formId;
+
+                loadScript('https://link.msgsndr.com/js/form_embed.js', function () {
+                    scriptLoaded = true;
+                    succeed();
+                }, fail);
+            }
+
+            function boot() {
+                var formId = formIdFromConfig(VMP_GHL_FORM_ID);
+                var slots = document.querySelectorAll('[data-vmp-contact]');
+                Array.prototype.forEach.call(slots, function (root) {
+                    if (formId) mountEmbed(root, formId);
+                    else {
+                        bindFallback(root);
+                        root.setAttribute('data-vmp-state', 'fallback');
+                    }
+                });
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', boot);
+            } else {
+                boot();
+            }
+        })();
     </script>
 </body>
 </html>
